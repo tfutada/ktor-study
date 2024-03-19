@@ -9,7 +9,7 @@ import io.ktor.client.plugins.*
 
 
 fun main() = runBlocking {
-    val NUM_COROUTINES = 3000
+    val NUM_COROUTINES = 1000
     val TIMEOUT = 60_000L
 
     val client = HttpClient(CIO) {
