@@ -9,7 +9,7 @@ import io.ktor.client.plugins.*
 
 
 fun main() = runBlocking {
-    val NUM_COROUTINES = 1000
+    val NUM_COROUTINES = 3000
     val TIMEOUT = 60_000L
 
     val client = HttpClient(CIO) {
@@ -17,18 +17,18 @@ fun main() = runBlocking {
 //            endpoint.maxConnectionsPerRoute = NUM_COROUTINES
 //        }
         install(HttpTimeout) {
-            connectTimeoutMillis = TIMEOUT // Increase connection timeout to 30 seconds
+//            connectTimeoutMillis = TIMEOUT // Increase connection timeout to 30 seconds
             // Other timeout settings:
-            requestTimeoutMillis = TIMEOUT
-            socketTimeoutMillis = TIMEOUT
+//            requestTimeoutMillis = TIMEOUT
+//            socketTimeoutMillis = TIMEOUT
         }
     }
 
     repeat(NUM_COROUTINES) { // launch a lot of coroutines
         launch {
-            val response: HttpResponse = client.get("http://localhost:8081/") {
+            val response: HttpResponse = client.get("http://localhost:8080/") {
                 timeout {
-                    requestTimeoutMillis = TIMEOUT // 30 seconds
+//                    requestTimeoutMillis = TIMEOUT // 30 seconds
                 }
             }
             print(".")
