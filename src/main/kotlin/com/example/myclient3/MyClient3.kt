@@ -12,7 +12,6 @@ fun main() = runBlocking {
 
     val client = HttpClient(CIO) {
         engine {
-            requestTimeout = 20000 // Example: 20 seconds
             endpoint.maxConnectionsPerRoute = NUM_COROUTINES
         }
     }
@@ -24,5 +23,7 @@ fun main() = runBlocking {
         }
     }
 
+    delay(6000L)
     client.close()
 }
+
