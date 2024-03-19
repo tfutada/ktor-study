@@ -1,4 +1,4 @@
-package com.example.myclient
+package com.example.myclient2
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
