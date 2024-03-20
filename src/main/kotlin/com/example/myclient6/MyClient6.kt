@@ -30,6 +30,10 @@ fun main() = runBlocking {
         async { client.get(url).bodyAsText() }
     }
 
+    delay(4000) // delay 1 second
+    println("Waiting for all requests to complete...")
+    println("Completed requests: ${requests.count { it.isCompleted }}")
+
     requests.forEach { deferred ->
         println(deferred.await())
     }
