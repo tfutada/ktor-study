@@ -28,7 +28,6 @@ fun Application.configureRouting() {
                 call.respondText("No file uploaded")
                 return@post
             }
-            println("Content-Length: $contentLength")
 
             val multipartData = call.receiveMultipart()
 
@@ -41,7 +40,8 @@ fun Application.configureRouting() {
                     is PartData.FileItem -> {
                         fileName = part.originalFileName as String
                         val fileBytes = part.streamProvider().readBytes()
-                        File("uploads/$fileName").writeBytes(fileBytes)
+                        println("File is uploaded: $fileName")
+//                        File("uploads/$fileName").writeBytes(fileBytes)
                     }
 
                     else -> {}
