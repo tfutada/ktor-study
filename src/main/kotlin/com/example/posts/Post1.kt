@@ -21,6 +21,10 @@ suspend fun main() {
     }
 
     val response: HttpResponse = client.post("https://jsonplaceholder.typicode.com/posts") {
+        headers {
+            append(HttpHeaders.Authorization, "abc123")
+            append(HttpHeaders.UserAgent, "ktor client")
+        }
         contentType(ContentType.Application.Json)
         setBody(Post("foo", "bar", 1))
     }
