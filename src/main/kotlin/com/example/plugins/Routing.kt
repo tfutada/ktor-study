@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -22,6 +23,13 @@ fun Application.configureRouting() {
         var fileName = ""
 
         post("/upload") {
+            val contentLength = call.request.header(HttpHeaders.ContentLength)
+            if (contentLength == null) {
+                call.respondText("No file uploaded")
+                return@post
+            }
+            println("Content-Length: $contentLength")
+
             val multipartData = call.receiveMultipart()
 
             multipartData.forEachPart { part ->
