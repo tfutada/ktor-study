@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree.Companion.main
+import java.util.*
 
 val ktor_version: String by project
 val kotlin_version: String by project
@@ -37,4 +37,22 @@ dependencies {
 dependencies {
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
+}
+
+val osName = System.getProperty("os.name").lowercase(Locale.getDefault())
+val tcnativeClassifier = when {
+    osName.contains("win") -> "windows-x86_64"
+    osName.contains("linux") -> "linux-x86_64"
+    osName.contains("mac") -> "osx-x86_64"
+    else -> null
+}
+
+val tcnativeVersion = "2.0.65.Final"
+
+dependencies {
+    if (tcnativeClassifier != null) {
+        implementation("io.netty:netty-tcnative-boringssl-static:$tcnativeVersion:$tcnativeClassifier")
+    } else {
+        implementation("io.netty:netty-tcnative-boringssl-static:$tcnativeVersion")
+    }
 }
