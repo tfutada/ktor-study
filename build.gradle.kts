@@ -49,6 +49,7 @@ val tcnativeClassifier = when {
 
 val tcnativeVersion = "2.0.65.Final"
 
+// HTTP/2対応。動かない場合は、コメントアウトしてください。
 dependencies {
     if (tcnativeClassifier != null) {
         implementation("io.netty:netty-tcnative-boringssl-static:$tcnativeVersion:$tcnativeClassifier")
