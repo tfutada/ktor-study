@@ -40,10 +40,22 @@ fun Application.configureRouting() {
 
                     is PartData.FileItem -> {
                         fileName = part.originalFileName as String
-                        val fileBytes = part.streamProvider().readBytes()
                         println("File is uploaded: $fileName")
-                        File("uploads/$fileName").writeBytes(fileBytes)
-                        println("File is saved: $fileName")
+                        val file = File("uploads/$fileName")
+
+                        if (false) {
+                            val fileBytes = part.streamProvider().readBytes()
+                            file.writeBytes(fileBytes)
+                        } else {
+                            // use InputStream from part to save file
+                            part.streamProvider().use { its ->
+                                // copy the stream to the file with buffering
+                                file.outputStream().buffered().use {
+                                    // note that this is blocking
+                                    its.copyTo(it)
+                                }
+                            }
+                        }
                     }
 
                     else -> {}
