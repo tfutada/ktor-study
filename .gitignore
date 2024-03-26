@@ -34,3 +34,5 @@ out/
 
 ### VS Code ###
 .vscode/
+/uploads/input-second.txt
+/uploads/input.txt

@@ -42,7 +42,8 @@ fun Application.configureRouting() {
                         fileName = part.originalFileName as String
                         val fileBytes = part.streamProvider().readBytes()
                         println("File is uploaded: $fileName")
-//                        File("uploads/$fileName").writeBytes(fileBytes)
+                        File("uploads/$fileName").writeBytes(fileBytes)
+                        println("File is saved: $fileName")
                     }
 
                     else -> {}
