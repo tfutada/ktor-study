@@ -3,6 +3,7 @@ package com.example.plugins
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
+import io.ktor.server.http.content.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -13,7 +14,7 @@ import java.io.File
 fun Application.configureRouting() {
     routing {
         get("/") {
-            call.respondText("Hello World!999111")
+            call.respondText("Hello World! 999")
         }
         get("/delay") {
             delay(3000L)

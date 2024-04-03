@@ -8,6 +8,6 @@ import io.ktor.client.statement.*
 suspend fun main() {
     val client = HttpClient(CIO)
     val response: HttpResponse = client.get("https://ktor.io/")
-    println(response.bodyAsText())
+    println(response.bodyAsText().substring(0, 100))
 }
 
