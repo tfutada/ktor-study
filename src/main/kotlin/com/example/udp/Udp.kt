@@ -10,7 +10,7 @@ fun main() {
     println("Hello, UDP!")
 
     val selectorManager = SelectorManager(Dispatchers.IO)
-    val serverSocket = aSocket(selectorManager).udp().bind(InetSocketAddress("::", 5106))
+    val serverSocket = aSocket(selectorManager).udp().bind(InetSocketAddress("::", 5106)) // 0.0.0.0 for IPv6
     println("Server is listening at ${serverSocket.localAddress}")
 
     // Use CoroutineScope to manage coroutines better. This scope is tied to the main function's lifecycle.
