@@ -1,26 +1,34 @@
-package com.example.posts
+package com.example.postsOkHttp
 
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.engine.*
+import io.ktor.client.engine.ProxyBuilder.http
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.Serializable
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.network.sockets.*
+import io.ktor.serialization.kotlinx.json.*
+import java.net.Proxy
 
 @Serializable
 data class Post(val title: String, val body: String, val userId: Int)
 
+// https://ktor.io/docs/proxy.html#proxy_auth
+// https://ktor.io/docs/http-client-engines.html#okhttp
 suspend fun main() {
-    val client = HttpClient(CIO) {
+    // use OkHttp instead of CIO
+    val client = HttpClient(OkHttp) {
+        engine {
+            config {
+                followRedirects(true)
+            }
+//            proxy = ProxyBuilder.http("http://sample-proxy-server:3128/")
+        }
         install(ContentNegotiation) {
             json()
-        }
-        install(HttpTimeout) {
-            connectTimeoutMillis = 10_000
-            requestTimeoutMillis = 10_000
         }
     }
 

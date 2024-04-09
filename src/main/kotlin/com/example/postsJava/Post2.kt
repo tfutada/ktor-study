@@ -1,26 +1,29 @@
-package com.example.posts
+package com.example.postsJava
 
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.Serializable
+import io.ktor.client.engine.java.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 
 @Serializable
 data class Post(val title: String, val body: String, val userId: Int)
 
+// https://ktor.io/docs/proxy.html#proxy_auth
+// https://ktor.io/docs/http-client-engines.html#java
 suspend fun main() {
-    val client = HttpClient(CIO) {
+    // use Java instead of CIO
+    val client = HttpClient(Java) {
+        engine {
+            pipelining = true
+//            proxy = ProxyBuilder.http("http://proxy-server.com/")
+            protocolVersion = java.net.http.HttpClient.Version.HTTP_1_1
+        }
         install(ContentNegotiation) {
             json()
-        }
-        install(HttpTimeout) {
-            connectTimeoutMillis = 10_000
-            requestTimeoutMillis = 10_000
         }
     }
 
