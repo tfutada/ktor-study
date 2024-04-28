@@ -26,6 +26,7 @@ data class ApiResponse(
     val timestamp: String
 )
 
+// invoke a Corda endpoint via ssl and authenticate with basic auth
 suspend fun main() {
     val client = client()
     val response: HttpResponse = client.get("https://localhost:8888/api/v1/flow/86F3F0502295/create-1")
