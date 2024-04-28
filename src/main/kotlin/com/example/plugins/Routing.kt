@@ -24,6 +24,11 @@ fun Application.configureRouting() {
         var fileDescription = ""
         var fileName = ""
 
+        // post
+        post("/corda") {
+            call.respondText("done")
+        }
+
         post("/upload") {
             val contentLength = call.request.header(HttpHeaders.ContentLength)
             if (contentLength == null) {

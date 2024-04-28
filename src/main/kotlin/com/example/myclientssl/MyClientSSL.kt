@@ -2,17 +2,21 @@ package com.example.myclientssl
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import java.security.cert.X509Certificate
 import javax.net.ssl.X509TrustManager
 
+val auth = System.getenv("CORDA_AUTH")!!
+
 suspend fun main() {
     val client = client()
-    val response: HttpResponse = client.get("https://localhost:8443/")
+    val response: HttpResponse = client.get("https://localhost:8888/api/v1/hello/getprotocolversion")
     println(response.bodyAsText())
 }
 
@@ -39,5 +43,11 @@ fun client() = HttpClient(CIO) {
                 coerceInputValues = true
             },
         )
+    }
+
+    println("auth: $auth")
+    defaultRequest {
+        // Assuming you're using "Bearer" token; adjust if using a different scheme
+        header(HttpHeaders.Authorization, "Bearer $auth")
     }
 }
