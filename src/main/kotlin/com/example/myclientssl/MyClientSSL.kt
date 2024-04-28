@@ -12,11 +12,10 @@ import kotlinx.serialization.json.Json
 import java.security.cert.X509Certificate
 import javax.net.ssl.X509TrustManager
 
-val auth = System.getenv("CORDA_AUTH")!!
 
 suspend fun main() {
     val client = client()
-    val response: HttpResponse = client.get("https://localhost:8888/api/v1/hello/getprotocolversion")
+    val response: HttpResponse = client.get("https://localhost:8888/api/v1/flow/86F3F0502295/create-1")
     println(response.bodyAsText())
 }
 
@@ -45,9 +44,8 @@ fun client() = HttpClient(CIO) {
         )
     }
 
-    println("auth: $auth")
     defaultRequest {
-        // Assuming you're using "Bearer" token; adjust if using a different scheme
-        header(HttpHeaders.Authorization, "Bearer $auth")
+        val auth = System.getenv("CORDA_AUTH")!!
+        header(HttpHeaders.Authorization, "Basic $auth")
     }
 }
