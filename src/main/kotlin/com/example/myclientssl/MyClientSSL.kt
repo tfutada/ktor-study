@@ -1,6 +1,7 @@
 package com.example.myclientssl
 
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -8,15 +9,33 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 import java.security.cert.X509Certificate
 import javax.net.ssl.X509TrustManager
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.decodeFromString
 
+@Serializable
+data class ApiResponse(
+    val holdingIdentityShortHash: String,
+    val clientRequestId: String,
+    val flowId: String,
+    val flowStatus: String,
+    val flowResult: String,
+    val flowError: String?,
+    val timestamp: String
+)
 
 suspend fun main() {
     val client = client()
     val response: HttpResponse = client.get("https://localhost:8888/api/v1/flow/86F3F0502295/create-1")
-    println(response.bodyAsText())
+
+    if (response.status.value in 200..299) {
+        val body = response.body<ApiResponse>()
+        println("Success: $body")
+    } else {
+        println("Failed with status code: ${response.status.value}")
+    }
 }
 
 val trust = object : X509TrustManager {
