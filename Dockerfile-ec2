@@ -1,17 +1,14 @@
 # Base image with OpenJDK 17
 FROM openjdk:17
 
-# Expose port 5106 for the application
-EXPOSE 5106
-
-# Create app and logs directories
-RUN mkdir /app /app/logs
+# Expose port 8080 for the application
+EXPOSE 8080
 
 # Copy the JAR file from the current directory to the /app directory in the container
-COPY kotlin-study-all.jar /app/kotlin-study-all.jar
+COPY build/libs/com.example.ktor-study-all.jar /app/ktor-server.jar
 
 # Set the working directory
 WORKDIR /app
 
 # Command to run the application
-ENTRYPOINT ["java", "-jar", "kotlin-study-all.jar"]
+ENTRYPOINT ["java", "-jar", "ktor-server.jar"]
