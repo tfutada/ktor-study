@@ -1,5 +1,9 @@
 package com.example.plugins
 
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -19,6 +23,26 @@ fun Application.configureRouting() {
         get("/delay") {
             delay(3000L)
             call.respondText("Hello World!999111")
+        }
+
+        get("/gofr") {
+            val client = HttpClient(CIO)
+            val response: HttpResponse = client.get("http://gofr-srv:7001/greet")
+
+            // Check if the response status is successful
+            if (response.status == HttpStatusCode.OK) {
+                // Get the response content as String
+                val responseBody = response.bodyAsText()
+
+                // Return the response body directly to the client
+                call.respondText(responseBody, ContentType.Application.Json)
+            } else {
+                // Handle non-OK responses here
+                call.respondText(
+                    "Failed to fetch data: ${response.status.description}",
+                    status = HttpStatusCode.BadGateway
+                )
+            }
         }
 
         var fileDescription = ""
