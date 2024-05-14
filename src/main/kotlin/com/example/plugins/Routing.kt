@@ -15,10 +15,12 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.delay
 import java.io.File
 
+val GOFR = System.getenv("GOFR")!!
+
 fun Application.configureRouting() {
     routing {
         get("/") {
-            call.respondText("Hello World! 555")
+            call.respondText("Hello World! 888")
         }
         get("/delay") {
             delay(3000L)
@@ -27,7 +29,7 @@ fun Application.configureRouting() {
 
         get("/gofr") {
             val client = HttpClient(CIO)
-            val response: HttpResponse = client.get("http://gofr-srv:7001/greet")
+            val response: HttpResponse = client.get(GOFR)
 
             // Check if the response status is successful
             if (response.status == HttpStatusCode.OK) {
