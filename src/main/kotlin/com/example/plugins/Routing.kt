@@ -15,8 +15,11 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.delay
 import java.io.File
 
-val GOFR = System.getenv("GOFR")!!
-
+val GOFR: String = System.getenv("GOFR") ?: run {
+    System.err.println("Error: Environment variable 'GOFR' is not set.")
+    System.exit(1)
+    "" // This is a dummy return to satisfy the type system; it will never be reached because of System.exit(1)
+}
 fun Application.configureRouting() {
     routing {
         get("/") {
