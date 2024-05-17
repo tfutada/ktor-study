@@ -20,14 +20,17 @@ val GOFR: String = System.getenv("GOFR") ?: run {
     System.exit(1)
     "" // This is a dummy return to satisfy the type system; it will never be reached because of System.exit(1)
 }
+
 fun Application.configureRouting() {
     routing {
         get("/") {
             call.respondText("Hello World! 888")
         }
         get("/delay") {
-            delay(3000L)
-            call.respondText("Hello World!999111")
+            // Get the sleep time from the query parameter
+            val sleepTime = call.parameters["time"]?.toLongOrNull() ?: 3000L
+            delay(sleepTime)
+            call.respondText("slept for $sleepTime")
         }
 
         get("/gofr") {
